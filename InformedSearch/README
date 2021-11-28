@@ -1,0 +1,67 @@
+###################
+# Informed Search
+# Rob Pitkin
+# Comp 131
+# README
+###################
+
+Run:
+     - run executable with
+            python3 ./InformedSearch.py
+
+
+Program Purpose:
+        This program was designed and implemented to replicate A* search 
+        being used to solve the Pancake problem. Given a random starting
+        stack of pancakes (list of sizes from 1-10), the program finds
+        a near optimal (if not optimal) solution and prints out the flips
+        needed to reach the goal state.
+
+Acknowledgements: 
+        The algorithm pseudocode was taken from the lecture slides and the
+        textbook. I also used the gap heuristic after reading the material
+        provided in the spec.
+
+Files:
+        # InformedSearch.py:
+              Main program file, contains implementation and all defined classes
+
+Notes:
+        As seen in the comments of the actual implementation, I elected to use
+        a list to store visited states. Because of this, each time the program
+        checks if a neighbor or node has already been visited, it has to
+        compare the state (list of sizes) with every state in the visited list.
+        This can be horrible for time complexity since the more nodes visited 
+        means there are more nodes to check with each iteration. However,
+        given that the average visited nodes for a stack of 10 pancakes was only
+        a few hundred in the documentation for the gap heuristic, I decided
+        that even in the worst case, it wouldn't slow down the program enough
+        to cause worry. Ideally checking visited nodes is an O(1) operation
+        since there is typically a connected graph or a finite search space for
+        A* to explore, in which case nodes can be just marked visited or not.
+        However, given the nature of the pancake problem, there are 10!
+        possible states and with the way I am generating neighbors, checking
+        for visited always requires comparing the lists themselves. An
+        improvement could be to use binary search on the list of visited states
+        (or some other fast search), but it would require formatting the list
+        to be able to partition in the first place. There probably is a very
+        easy way around this, but I can't think of one with python, a language
+        I haven't used more than casually until now.
+        
+        As for my UCS implementation, the backwards cost being used is simply
+        the number of flips (so 1 each time), which in my mind essentially makes
+        UCS into BFS (or something of the like). However, given that UCS on a
+        fundamental level is really just A* without the forwards cost,
+        (almost identical pseudocode) I just took my A* implementation, copy
+        and pasted it below and then renamed it UCS and removed the forwards
+        cost (and tweaked a few aspects). Thus, it's still in the spirit of UCS
+        itself, even if the costs are running sums of 1. Again, due to the
+        nature of the pancake problem, there aren't edge weights or path costs
+        that would differ between one state or another. I toyed with the idea
+        of making the backwards cost the sum of the size of flipped pancakes
+        (sort of an analogy to the "weight" of the pancakes), but I then
+        remembered that the pancake sizes have nothing to do with the flipping
+        action. Considering the problem is solved with 60 pancakes in the
+        gap heuristic documentation, I interpreted the problem to be almost
+        like sorting with conditions (only flipping action allowed) instead of
+        any physically realistic conundrum.
